@@ -41,11 +41,20 @@ public class change_color : MonoBehaviour
             {
                 material.SetColor("_Color", Color.blue);
                 yield return new WaitForSeconds(colorSeven);
+
+            }
+            if (currentScore == "1")
+            {
                 material.SetColor("_Color", Color.black);
                 yield return new WaitForSeconds(colorSeven);
             }
-            else
+            if (currentScore == "-1")
             {
+                material.SetColor("_Color", Color.blue);
+                yield return new WaitForSeconds(colorSeven);
+            }
+            else {
+                material.SetColor("_Color", Color.black);
                 yield return new WaitForSeconds(0);
             }
 

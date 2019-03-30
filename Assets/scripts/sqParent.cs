@@ -83,27 +83,27 @@ public class sqParent : MonoBehaviour
             case 0:
                 Tarrow.transform.position = new Vector3(-8.5f,1f,0f);
                 Ttext.transform.position = new Vector3(-8.5f, -0.2f, 0f);
-                squares[ArrowPos].GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 1:
                 Tarrow.transform.position = new Vector3(0f, 1f, 0f);
                 Ttext.transform.position = new Vector3(0f, -0.2f, 0f);
-                squares[ArrowPos].GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 2:
                 Tarrow.transform.position = new Vector3(8.5f, 1f, 0f);
                 Ttext.transform.position = new Vector3(8.5f, -0.2f, 0f);
-                squares[ArrowPos].GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 3:
                 Tarrow.transform.position = new Vector3(-4.2f, -2.9f, 0f);
                 Ttext.transform.position = new Vector3(-4.2f, -4f, 0f);
-                squares[ArrowPos].GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 4:
                 Tarrow.transform.position = new Vector3(4.2f, -2.9f, 0f);
                 Ttext.transform.position = new Vector3(4.2f, -4f, 0f);
-                squares[ArrowPos].GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
         }
     }
