@@ -7,6 +7,7 @@ public class sqParent : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject parent;
+    public GameObject TCP;
     public List<GameObject> squares;
     public List<GameObject> textFields;
     public GameObject Tarrow;
@@ -15,6 +16,7 @@ public class sqParent : MonoBehaviour
     public static bool arrowB;
     public static bool testB;
     public static char[] newData;
+
     void Start()
     {
         //ListAllChildren();
@@ -40,6 +42,8 @@ public class sqParent : MonoBehaviour
     }
     public static void changeData(string data)
     {
+
+        
         newData = data.ToCharArray();
         if (newData[0] == 't')
         {
@@ -55,7 +59,9 @@ public class sqParent : MonoBehaviour
 
 
     }
-    public void training_control(int trainTurn)
+
+    
+        public void training_control(int trainTurn)
     {
         for (int i = 0; i <5;i++)
         {
@@ -63,10 +69,15 @@ public class sqParent : MonoBehaviour
             {
                 squares[i].GetComponent<change_color>().changeCurrent("1");
             }
-            else
+            /*else
             {
                 squares[i].GetComponent<change_color>().changeCurrent("0");
-            }
+            }*/
+        }
+        if (train)
+        {
+
+        TCP.GetComponent<TCP>().SendMessage("start");
         }
     }
     public void TfieldsV(Boolean visibility)
@@ -106,6 +117,7 @@ public class sqParent : MonoBehaviour
                 squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
         }
+        TCP.GetComponent<TCP>().SendMessage("start");
     }
     IEnumerator trainMethod()
     {
@@ -117,7 +129,7 @@ public class sqParent : MonoBehaviour
                 char sqNumber = newData[0];
                 int sqINumber = sqNumber - '0';
                 sqINumber = sqINumber - 1;
-                Debug.Log("it issssssss " + (sqINumber));
+                Debug.Log("it is " + (sqINumber));
                 switch (sqINumber)
                 {
                     case 0:
@@ -152,7 +164,7 @@ public class sqParent : MonoBehaviour
                 char sqNumber = newData[0];
                 int sqINumber = sqNumber - '0';
                 sqINumber = sqINumber - 1;
-                Debug.Log("it is arrow number" + (sqINumber));
+                Debug.Log("it is arrow number " + (sqINumber));
 
                 switch (sqINumber)
                 {

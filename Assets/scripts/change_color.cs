@@ -7,7 +7,7 @@ public class change_color : MonoBehaviour
     Material material;
     Color changingColor;
     public float colorSeven;
-
+    public int  id ;
     public string currentScore = "0";
     public bool start;
 
@@ -39,9 +39,8 @@ public class change_color : MonoBehaviour
         {
             if (currentScore == "1")
             {
-                material.SetColor("_Color", Color.blue);
+                material.SetColor("_Color", Color.white);
                 yield return new WaitForSeconds(colorSeven);
-
             }
             if (currentScore == "1")
             {
@@ -50,7 +49,7 @@ public class change_color : MonoBehaviour
             }
             if (currentScore == "-1")
             {
-                material.SetColor("_Color", Color.blue);
+                material.SetColor("_Color", Color.white);
                 yield return new WaitForSeconds(colorSeven);
             }
             else {

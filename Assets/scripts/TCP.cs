@@ -9,20 +9,20 @@ using UnityEngine;
 
 public class TCP : MonoBehaviour
 {
-    #region private members 	
+    #region public members 	
     /// <summary> 	
     /// TCPListener to listen for incomming TCP connection 	
     /// requests. 	
     /// </summary> 	
-    private TcpListener tcpListener;
+    public TcpListener tcpListener;
     /// <summary> 
     /// Background thread for TcpServer workload. 	
     /// </summary> 	
-    private Thread tcpListenerThread;
+    public Thread tcpListenerThread;
     /// <summary> 	
     /// Create handle to connected tcp client. 	
     /// </summary> 	
-    private TcpClient connectedTcpClient;
+    public TcpClient connectedTcpClient;
     #endregion
     [HideInInspector]
     public String sentData;
@@ -40,14 +40,14 @@ public class TCP : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SendMessage();
+            //SendMessage();
         }
     }
 
     /// <summary> 	
     /// Runs in background TcpServerThread; Handles incomming TcpClient requests 	
     /// </summary> 	
-    private void ListenForIncommingRequests()
+    public void ListenForIncommingRequests()
     {
         try
         {
@@ -73,6 +73,7 @@ public class TCP : MonoBehaviour
                             string clientMessage = Encoding.ASCII.GetString(incommingData);
                             Debug.Log("client message received as: " + clientMessage);
                             sentData = clientMessage;
+                            
                             sqParent.changeData(sentData);
                         }
                     }
@@ -84,10 +85,11 @@ public class TCP : MonoBehaviour
             Debug.Log("SocketException " + socketException.ToString());
         }
     }
+ 
     /// <summary> 	
     /// Send message to client using socket connection. 	
     /// </summary> 	
-    private void SendMessage()
+    public void SendMessage(string x )
     {
         if (connectedTcpClient == null)
         {
@@ -100,12 +102,12 @@ public class TCP : MonoBehaviour
             NetworkStream stream = connectedTcpClient.GetStream();
             if (stream.CanWrite)
             {
-                string serverMessage = "This is a message from your server.";
+                string serverMessage = x;
                 // Convert string message to byte array.                 
                 byte[] serverMessageAsByteArray = Encoding.ASCII.GetBytes(serverMessage);
                 // Write byte array to socketConnection stream.               
                 stream.Write(serverMessageAsByteArray, 0, serverMessageAsByteArray.Length);
-                Debug.Log("Server sent his message - should be received by client");
+                Debug.Log("Server sent his message -"+ x);
             }
         }
         catch (SocketException socketException)
