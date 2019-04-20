@@ -39,7 +39,7 @@ public class change_color : MonoBehaviour
         {
             if (currentScore == "1")
             {
-                material.SetColor("_Color", Color.white);
+                material.SetColor("_Color" , (new Color32(0,255,0,255)) );
                 yield return new WaitForSeconds(colorSeven);
             }
             if (currentScore == "1")
@@ -49,7 +49,7 @@ public class change_color : MonoBehaviour
             }
             if (currentScore == "-1")
             {
-                material.SetColor("_Color", Color.white);
+                material.SetColor("_Color", (new Color32(0, 255, 0, 255)));
                 yield return new WaitForSeconds(colorSeven);
             }
             else {

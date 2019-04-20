@@ -16,13 +16,15 @@ public class sqParent : MonoBehaviour
     public static bool arrowB;
     public static bool testB;
     public static char[] newData;
-
+    public static bool newData_recv;
     void Start()
     {
         //ListAllChildren();
         StartCoroutine(trainMethod());
-        Tarrow.SetActive(false);
-        Ttext.SetActive(false);
+        Tarrow.SetActive(false); //train arrow appearance 
+        Ttext.SetActive(false); //train text appearance
+        newData_recv = false;
+        
     }
 
     // Update is called once per frame
@@ -40,28 +42,39 @@ public class sqParent : MonoBehaviour
             Debug.Log(child.gameObject.name);
         }
     }
+
+
     public static void changeData(string data)
     {
 
-        
         newData = data.ToCharArray();
         if (newData[0] == 't')
         {
             Debug.Log("T");
             newData = newData.Skip(1).ToArray();
+            train = true;
+            newData_recv = true;
+        }
+        else if (newData[0] == 'a')
+        {
+            Debug.Log("A");
+            newData = newData.Skip(1).ToArray();
             arrowB = true;
+            newData_recv = true;
         }
         else
         {
-            testB = true;
-        }
-        
 
+            Debug.Log("Test");
+            testB = true;
+            newData_recv = true;
+        }
 
     }
 
-    
-        public void training_control(int trainTurn)
+
+   
+    public void training_control(int trainTurn)
     {
         for (int i = 0; i <5;i++)
         {
@@ -69,17 +82,12 @@ public class sqParent : MonoBehaviour
             {
                 squares[i].GetComponent<change_color>().changeCurrent("1");
             }
-            /*else
-            {
-                squares[i].GetComponent<change_color>().changeCurrent("0");
-            }*/
         }
-        if (train)
-        {
 
-        TCP.GetComponent<TCP>().SendMessage("start");
-        }
     }
+
+
+
     public void TfieldsV(Boolean visibility)
     {
         foreach (GameObject tfield in textFields)
@@ -87,6 +95,8 @@ public class sqParent : MonoBehaviour
             tfield.gameObject.SetActive(visibility);
         }
     }
+
+
     public void arrowTime(int ArrowPos)
     {
         switch (ArrowPos)
@@ -94,115 +104,102 @@ public class sqParent : MonoBehaviour
             case 0:
                 Tarrow.transform.position = new Vector3(-8.5f,1f,0f);
                 Ttext.transform.position = new Vector3(-8.5f, -0.2f, 0f);
-                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
+                //squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 1:
                 Tarrow.transform.position = new Vector3(0f, 1f, 0f);
                 Ttext.transform.position = new Vector3(0f, -0.2f, 0f);
-                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
+                //squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 2:
                 Tarrow.transform.position = new Vector3(8.5f, 1f, 0f);
                 Ttext.transform.position = new Vector3(8.5f, -0.2f, 0f);
-                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
+                //squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 3:
                 Tarrow.transform.position = new Vector3(-4.2f, -2.9f, 0f);
                 Ttext.transform.position = new Vector3(-4.2f, -4f, 0f);
-                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
+                //squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
             case 4:
                 Tarrow.transform.position = new Vector3(4.2f, -2.9f, 0f);
                 Ttext.transform.position = new Vector3(4.2f, -4f, 0f);
-                squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
+               // squares[ArrowPos].GetComponent<change_color>().changeCurrent("-1");
                 break;
         }
-        TCP.GetComponent<TCP>().SendMessage("start");
+        //TCP.GetComponent<TCP>().SendMessage("start");
     }
+
+
     IEnumerator trainMethod()
     {
         while (true)
         {
-            if (train)
+            if (newData_recv)
             {
-                TfieldsV(false);
-                char sqNumber = newData[0];
-                int sqINumber = sqNumber - '0';
-                sqINumber = sqINumber - 1;
-                Debug.Log("it is " + (sqINumber));
-                switch (sqINumber)
+                if (arrowB)
                 {
-                    case 0:
-                        training_control(0);
-                        break;
-                    case 1:
-                        training_control(1);
-                        break;
-                    case 2:
-                        training_control(2);
-                        break;
-                    case 3:
-                        training_control(3);
-                        break;
-                    case 4:
-                        training_control(4);
-                        break;
-                }
-                newData = newData.Skip(1).ToArray();
-                arrowB = true;
-                train = false;
-                if (newData.Length == 0)
-                {
+                    training_control(-1);
+                    TfieldsV(false);
+                    char sqNumber = newData[0];
+                    int sqINumber = sqNumber - '0';
+                    sqINumber = sqINumber - 1;
+                    Debug.Log("it is arrow number" + (sqINumber));
+
+                    switch (sqINumber)
+                    {
+                        case 0:
+                            arrowTime(0);
+                            break;
+                        case 1:
+                            arrowTime(1);
+                            break;
+                        case 2:
+                            arrowTime(2);
+                            break;
+                        case 3:
+                            arrowTime(3);
+                            break;
+                        case 4:
+                            arrowTime(4);
+                            break;
+                    }
+                    Tarrow.SetActive(true);
+                    Ttext.SetActive(true);
                     arrowB = false;
                 }
-                yield return new WaitForSeconds(5);
-            }
-            else if (arrowB)
-            {
-                TfieldsV(false);
-                training_control(-2);
-                char sqNumber = newData[0];
-                int sqINumber = sqNumber - '0';
-                sqINumber = sqINumber - 1;
-                Debug.Log("it is arrow number " + (sqINumber));
-
-                switch (sqINumber)
+                else if (train)
                 {
-                    case 0:
-                        arrowTime(0);
-                        break;
-                    case 1:
-                        arrowTime(1);
-                        break;
-                    case 2:
-                        arrowTime(2);
-                        break;
-                    case 3:
-                        arrowTime(3);
-                        break;
-                    case 4:
-                        arrowTime(4);
-                        break;
+                    Debug.Log("the train part");
+                    training_control(-1);
+                    Tarrow.SetActive(false);
+                    Ttext.SetActive(false);
+                    train = false;
                 }
-                Tarrow.SetActive(true);
-                Ttext.SetActive(true);
-                arrowB = false;
-                train = true;
-                yield return new WaitForSeconds(5);
+                else if (testB)
+                {
+                    Debug.Log("the test time");
+                    TfieldsV(true);
+                    training_control(-1);
+                    Tarrow.SetActive(false);
+                    Ttext.SetActive(false);
+                    testB = false;
+
+                }
+
+                newData_recv = false;
+
+                while (!newData_recv)
+                {
+                    yield return new WaitForSeconds(0);
+                }
+
+
                 Tarrow.SetActive(false);
                 Ttext.SetActive(false);
             }
-            else
-            {
-                TfieldsV(true);
-
-                training_control(-1);
                 yield return new WaitForSeconds(0);
-            }
-            //yield return new WaitForSeconds(5);
-
         }
     }
-
 
 }

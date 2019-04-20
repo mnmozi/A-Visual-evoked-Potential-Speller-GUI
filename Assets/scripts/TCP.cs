@@ -40,7 +40,7 @@ public class TCP : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //SendMessage();
+            SendMessage("hello");
         }
     }
 
